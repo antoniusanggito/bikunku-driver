@@ -3,12 +3,13 @@ import { useGeolocated } from "react-geolocated";
 const token = localStorage.getItem("token") || "";
 
 const client = new WebSocket(
-  `wss://api.bikunku.com/bus/stream?type=driver&token=${token}&experimental=false`
+  `wss://bikunku-be.fly.dev/bus/stream?type=driver&token=${token}&experimental=false`
 );
 
 export default function LocationBar() {
   const updateLocationData = (pos) => {
     console.log(pos);
+    console.log("ws sending");
     client.send(
       JSON.stringify({
         long: pos.coords.longitude,
@@ -17,6 +18,7 @@ export default function LocationBar() {
         speed: pos.coords.speed == null ? 0 : pos.coords.speed,
       })
     );
+    console.log("ws sent");
   };
 
   const { coords, isGeolocationAvailable, isGeolocationEnabled } =
